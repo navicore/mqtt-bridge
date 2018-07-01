@@ -21,7 +21,7 @@ object Conf extends Conf with LazyLogging {
     ActorMaterializerSettings(actorSystem).withSupervisionStrategy(decider))
 }
 
-trait Conf {
+trait Conf extends LazyLogging {
 
   val conf: Config = ConfigFactory.load()
 
@@ -37,6 +37,7 @@ trait Conf {
   val mqttPublishPwd: String = conf.getString("mqtt.publish.pwd")
   val mqttPublishTopic: String = conf.getString("mqtt.publish.topic")
 
+  logger.info(s"subscribing to $mqttSubscribeUrl")
   val srcSettings = MqttSourceSettings(
     MqttConnectionSettings(
       mqttSubscribeUrl,
@@ -48,6 +49,7 @@ trait Conf {
     Map(mqttSubscribeTopic -> MqttQoS.AtLeastOnce)
   )
 
+  logger.info(s"publishing to $mqttPublishUrl")
   val pubSettings: MqttConnectionSettings =
     MqttConnectionSettings(
       mqttPublishUrl,
