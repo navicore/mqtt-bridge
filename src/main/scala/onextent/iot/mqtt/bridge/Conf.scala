@@ -25,8 +25,11 @@ trait Conf extends LazyLogging {
 
   val conf: Config = ConfigFactory.load()
 
+  val host: String = conf.getString("mqtt.subscribe.host")
+  val proto: String = conf.getString("mqtt.subscribe.proto")
+  val port: Int = conf.getInt("mqtt.subscribe.port")
+  val mqttSubscribeUrl: String = s"$proto//$host:$port"
   val mqttSubscribeClientId: String = conf.getString("mqtt.subscribe.clientId")
-  val mqttSubscribeUrl: String = conf.getString("mqtt.subscribe.url")
   val mqttSubscribeUser: String = conf.getString("mqtt.subscribe.user")
   val mqttSubscribePwd: String = conf.getString("mqtt.subscribe.pwd")
   val mqttSubscribeTopic: String = conf.getString("mqtt.subscribe.topic")
