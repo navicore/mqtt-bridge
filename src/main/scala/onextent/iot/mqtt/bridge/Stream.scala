@@ -14,6 +14,8 @@ object Stream extends LazyLogging {
 
   def apply(): Unit = {
 
+    logger.info(s"stream starting...")
+
     val mqttSource: Source[MqttMessage, Future[Done]] =
       MqttSource.atMostOnce(srcSettings, 8)
 
