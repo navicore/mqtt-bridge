@@ -11,4 +11,3 @@ WORKDIR /app
 # override CMD from your run command, or k8s yaml, or marathon json, etc...
 #ENTRYPOINT ["java","-cp", "/app/MqttBridge.jar", "-Xms256m", "-Xmx512m"]
 ENTRYPOINT ["java","-cp", "/app/MqttBridge.jar"]
-
