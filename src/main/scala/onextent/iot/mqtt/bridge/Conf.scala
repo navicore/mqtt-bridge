@@ -62,4 +62,11 @@ trait Conf extends LazyLogging {
 
   val sinkSettings: MqttConnectionSettings =
     pubSettings.withClientId(clientId = mqttPublishClientId)
+
+
+  val myName: String = conf.getString("main.myName")
+
+  val intervalSeconds: FiniteDuration =
+    Duration(conf.getInt("main.intervalSeconds"), SECONDS)
+
 }
