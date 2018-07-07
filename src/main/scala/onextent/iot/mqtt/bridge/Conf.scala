@@ -38,7 +38,8 @@ trait Conf extends LazyLogging {
   val mqttPublishUrl: String = conf.getString("mqtt.publish.url")
   val mqttPublishUser: String = conf.getString("mqtt.publish.user")
   val mqttPublishPwd: String = conf.getString("mqtt.publish.pwd")
-  val mqttPublishTopic: String = conf.getString("mqtt.publish.topic")
+  val mqttPublishTopicPrefix: String = conf.getString("mqtt.publish.topicPrefix")
+  val mqttPublishTopicSuffix: String = conf.getString("mqtt.publish.topicSuffix")
 
   logger.info(s"subscribing to $mqttSubscribeUrl")
   val srcSettings = MqttSourceSettings(

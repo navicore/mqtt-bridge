@@ -37,14 +37,16 @@ object Stream extends LazyLogging {
       mode = ThrottleMode.Shaping
     )
 
-  def helloMqttMessage(): SayHello => MqttMessage =
-    (h: SayHello) => {
-      logger.debug(h.hello())
-      MqttMessage(mqttPublishTopic,
+  def helloMqttMessage(): SayHello => MqttMessage = {
+    val topic = s"$mqttPublishTopicPrefix$mqttPublishTopicSuffix"
+    h: SayHello => {
+      logger.debug(s"topic: $topic msg: ${h.hello()}")
+      MqttMessage(topic,
                   ByteString(h.asJson()),
                   Some(MqttQoS.AtLeastOnce),
                   retained = true)
     }
+  }
 
   def apply(): Unit = {
 
