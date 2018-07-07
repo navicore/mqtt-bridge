@@ -76,8 +76,6 @@ object Stream extends LazyLogging {
       }
       .runWith(toConsumer._1)
 
-    //handleTerminate(mqttStream)
-
     RestartSource
       .withBackoff(minBackoff = 1 second,
                    maxBackoff = 10 seconds,
