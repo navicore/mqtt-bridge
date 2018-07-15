@@ -9,7 +9,7 @@ import akka.util.ByteString
 import akka.{Done, NotUsed}
 import com.typesafe.scalalogging.LazyLogging
 import onextent.iot.mqtt.bridge.Conf._
-import onextent.iot.mqtt.bridge.models.SayHello
+import onextent.iot.mqtt.bridge.models.Heartbeat
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -38,11 +38,11 @@ object Stream extends LazyLogging {
       mode = ThrottleMode.Shaping
     )
 
-  def helloMqttMessage(): SayHello => MqttMessage = {
+  def helloMqttMessage(): Heartbeat => MqttMessage = {
     val topic = s"$mqttPublishTopicPrefix$mqttPublishTopicSuffix"
-    h: SayHello =>
+    h: Heartbeat =>
       {
-        logger.debug(s"topic: $topic msg: ${h.hello()}")
+        logger.debug(s"topic: $topic msg: ${h.beat()}")
         MqttMessage(topic,
                     ByteString(h.asJson()),
                     Some(MqttQoS.AtLeastOnce),
@@ -80,7 +80,7 @@ object Stream extends LazyLogging {
       .withBackoff(minBackoff = 1 second,
                    maxBackoff = 10 seconds,
                    randomFactor = 0.2) { () =>
-        Source.fromGraph(new HelloSource()).via(throttlingFlow)
+        Source.fromGraph(new HeartbeatSource()).via(throttlingFlow)
       }
       .map(helloMqttMessage())
       .runWith(toConsumer._1)
